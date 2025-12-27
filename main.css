@@ -1,0 +1,261 @@
+/* ================================
+   変数
+================================ */
+:root {
+  --bg: #f6f8fc;
+  --card: #ffffff;
+  --border: #dfe4f2;
+  --primary: #4f7cff;
+  --text: #222;
+  --muted: #777;
+
+  --select-bg: rgba(79, 124, 255, 0.18);
+}
+
+/* ================================
+   全体
+================================ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans JP", system-ui, sans-serif;
+}
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+}
+
+/* ================================
+   カード
+================================ */
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ================================
+   タイトル
+================================ */
+.page-title {
+  text-align: center;
+  margin-bottom: 6px;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.page-subtitle {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* ================================
+   操作パネル
+================================ */
+.control-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.control-panel input,
+.control-panel select,
+.control-panel button {
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+.control-panel button {
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+}
+
+.control-panel button:hover {
+  opacity: 0.9;
+}
+
+#username {
+  min-width: 180px;
+}
+
+#colorSelect {
+  min-width: 140px;
+}
+
+#customColor {
+  display: none;
+  width: 44px;
+  height: 40px;
+  padding: 0;
+}
+
+/* ================================
+   共通ヘッダー（月・週）
+================================ */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.calendar-header button {
+  padding: 6px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.calendar-header button:hover {
+  background: #f1f4ff;
+}
+
+.calendar-title {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.4;
+}
+
+/* ================================
+   月カレンダー
+================================ */
+#calendar {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.month-block {
+  width: 280px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.month-title {
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+/* ================================
+   日セル
+================================ */
+.day {
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+  padding: 4px 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.15s;
+}
+
+.day:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.day > div {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 自分 */
+.day.selected-by-me {
+  background: rgba(79, 124, 255, 0.25);
+  border: 2px solid #4f7cff;
+}
+.day.selected-by-me > div {
+  color: #1f3fbf;
+}
+
+/* 全員OK */
+.day.all-ok {
+  background: rgba(60, 190, 120, 0.25);
+  border: 2px solid #2ecc71;
+}
+.day.all-ok > div {
+  color: #1f7a4a;
+}
+
+/* 両方 */
+.day.selected-by-me.all-ok {
+  background: rgba(60, 190, 120, 0.35);
+  border-color: #2e9f66;
+}
+
+/* ================================
+   週表示
+================================ */
+.week-items {
+  display: grid;
+  gap: 10px;
+}
+
+.week-row {
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  font-size: 14px;
+}
+
+/* ================================
+   その他
+================================ */
+.hr {
+  margin: 30px;
+}
+
+/* ================================
+   レスポンシブ
+================================ */
+@media (max-width: 600px) {
+  .month-block {
+    width: 100%;
+  }
+
+  .control-panel {
+    flex-direction: column;
+  }
+
+  .control-panel input,
+  .control-panel select,
+  .control-panel button {
+    width: 100%;
+  }
+}

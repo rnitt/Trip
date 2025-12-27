@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>予定共有カレンダー</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <main>
+      <!-- タイトル -->
+      <div class="card">
+        <h1 class="page-title">予定共有カレンダー</h1>
+        <p class="page-subtitle">クリックで追加／もう一度で解除</p>
+        <p class="page-subtitle">
+          上側：予定設定画面(個人)、下側：予定確認画面(全体)
+        </p>
+      </div>
+
+      <!-- 操作パネル -->
+      <div class="card">
+        <div class="control-panel">
+          <input id="username" list="user-list" placeholder="ユーザー名" />
+          <datalist id="user-list"></datalist>
+
+          <select id="colorSelect">
+            <option value="#4f7cff">青</option>
+            <option value="#2fbf71">緑</option>
+            <option value="#f39c12">橙</option>
+            <option value="#e74c3c">赤</option
+            <option value="custom">カスタム</option>
+          </select>
+
+          <input type="color" id="customColor" value="#000000" />
+        </div>
+      </div>
+
+      <!-- 月ヘッダー -->
+      <div class="calendar-header">
+        <button id="prevMonth">＜</button>
+        <div class="calendar-title">
+          緑色：みんなOK ／ 青色：あなたが選択済み
+        </div>
+        <button id="nextMonth">＞</button>
+      </div>
+
+      <!-- 月カレンダー -->
+      <div id="calendar"></div>
+
+      <hr class="hr" />
+
+      <!-- 週表示 -->
+
+      <div class="calendar-header">
+        <button id="prevWeek">＜</button>
+        <div id="week-title" class="calendar-title"></div>
+        <button id="nextWeek">＞</button>
+      </div>
+      <div class="card">
+        <div class="week-items"></div>
+      </div>
+
+      <!-- 全員一致表示 -->
+      <div class="card">
+        <div class="page-title" style="font-size: 1.1rem">
+          ✅ 全員の予定が合う日
+        </div>
+        <div id="match-days"></div>
+      </div>
+    </main>
+
+    <script src="main.js"></script>
+  </body>
+</html>
