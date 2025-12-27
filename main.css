@@ -259,3 +259,76 @@ main {
     width: 100%;
   }
 }
+/* ロック画面全体 */
+#password-screen {
+  position: fixed;
+  inset: 0;
+  background: #f5f7fb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* カード */
+.password-box {
+  background: #ffffff;
+  padding: 32px 36px;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+/* タイトル */
+.password-box h2 {
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* 説明文 */
+.password-box p {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+/* 入力欄 */
+#password-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 14px;
+}
+
+/* ボタン */
+#password-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  background: #1c5fd4;
+  color: #fff;
+  cursor: pointer;
+}
+
+#password-btn:hover {
+  opacity: 0.9;
+}
+
+/* エラー */
+#password-error {
+  margin-top: 10px;
+  color: #c62828;
+  font-size: 0.9rem;
+}
+
+/* 非表示 */
+.hidden {
+  display: none;
+}
