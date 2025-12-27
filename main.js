@@ -256,16 +256,24 @@ async function sendWithRetry(url) {
     await jsonpRequest(url);
     return true;
   } catch (e) {
-    const retry = confirm(
-      "通信に失敗しました。\nネットワークが不安定な可能性があります。\n\n再試行しますか？"
-    );
-
-    if (retry) {
-      return await sendWithRetry(url);
-    } else {
-      return false;
-    }
+    console.warn("通信失敗（ロールバックします）", e);
+    return false;
   }
+}
+function rollbackOne(user, date) {
+  // 楽観データから削除
+  optimisticRecords = optimisticRecords.filter(
+    (r) =>
+      !(
+        normalizeUserName(r.user) === normalizeUserName(user) &&
+        normalizeDate(r.date) === date
+      )
+  );
+
+  renderCalendar();
+  renderWeekView();
+  updateMemberStatus();
+  renderMatchDaysFromCalendar();
 }
 
 /* ================= 状態 ================= */
@@ -543,15 +551,15 @@ async function onDateClick(dateStr) {
     });
   }
 
-  const success = await sendWithRetry(`${API_URL}?${params.toString()}`);
+  const ok = await sendWithRetry(`${API_URL}?${params.toString()}`);
 
-  if (success) {
-    optimisticRecords = [];
-    await loadData();
+  if (!ok) {
+    // 失敗した場合のみ、その1件を取り消す
+    rollbackOne(username, dateStr);
+    alert("通信に失敗したため、この操作は取り消されました。");
   } else {
-    // 失敗してキャンセルされた場合はロールバック
-    optimisticRecords = [];
-    await loadData();
+    // 成功時はあとで正規データと同期（任意）
+    setTimeout(loadData, 300);
   }
 }
 
