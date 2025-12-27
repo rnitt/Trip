@@ -740,6 +740,22 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCalendar();
     renderMatchDaysFromCalendar();
   });
+
+  const colorSelect = document.getElementById("colorSelect");
+  const customColor = document.getElementById("customColor");
+
+  if (colorSelect && customColor) {
+    colorSelect.addEventListener("change", () => {
+      if (colorSelect.value === "custom") {
+        customColor.style.display = "inline-block";
+
+        // 少し遅らせて開く
+        setTimeout(() => customColor.click(), 0);
+      } else {
+        customColor.style.display = "none";
+      }
+    });
+  }
 });
 document
   .getElementById("password-btn")
