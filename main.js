@@ -1,7 +1,183 @@
 /* ================= 設定 ================= */
-/* ================= 簡易パスワード ================= */
+/* ===============================
+   基本設定
+=============================== */
 
-let isUnlocked = false;
+/* 管理者（なければ空でOK） */
+const ADMIN_USERS = [];
+
+/* ===============================
+   ユーティリティ
+=============================== */
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+function normalizeUserName(name) {
+  return (name || "").trim().toLowerCase();
+}
+
+function isAdmin(name) {
+  return ADMIN_USERS.includes(normalizeUserName(name));
+}
+
+/* ===============================
+   JSONP 通信
+=============================== */
+
+function jsonpRequest(url) {
+  return new Promise((resolve, reject) => {
+    const callbackName = "jsonp_cb_" + Date.now();
+
+    window[callbackName] = (data) => {
+      delete window[callbackName];
+      script.remove();
+      resolve(data);
+    };
+
+    const script = document.createElement("script");
+    script.src = `${url}?callback=${callbackName}`;
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+}
+
+/* ===============================
+   ロード処理（ロック解除後のみ）
+=============================== */
+
+async function loadData() {
+  if (!isUnlocked) return;
+
+  try {
+    const res = await jsonpRequest(API_URL);
+    allRecords = res?.data || [];
+    optimisticRecords = [];
+
+    updateUserCandidates();
+    renderCalendar();
+    renderWeekView();
+    updateMemberStatus();
+    renderMatchDaysFromCalendar();
+  } catch (e) {
+    console.error("読み込み失敗", e);
+  }
+}
+
+/* ===============================
+   パスワード処理
+=============================== */
+
+function checkPassword() {
+  const input = $("password-input")?.value ?? "";
+
+  if (input === APP_PASSWORD) {
+    isUnlocked = true;
+
+    $("password-screen")?.classList.add("hidden");
+    $("app")?.classList.remove("hidden");
+
+    loadData();
+  } else {
+    if ($("password-error")) {
+      $("password-error").textContent = "パスワードが違います";
+    }
+  }
+}
+
+/* ===============================
+   初期化
+=============================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+  // 初期は必ずロック
+  $("app")?.classList.add("hidden");
+  $("password-screen")?.classList.remove("hidden");
+
+  $("password-btn")?.addEventListener("click", checkPassword);
+  $("password-input")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") checkPassword();
+  });
+
+  // UIイベント（ロック後に使われる）
+  $("prevMonth")?.addEventListener("click", () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+  });
+
+  $("nextMonth")?.addEventListener("click", () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+  });
+
+  $("prevWeek")?.addEventListener("click", () => {
+    currentDate.setDate(currentDate.getDate() - 7);
+    renderWeekView();
+  });
+
+  $("nextWeek")?.addEventListener("click", () => {
+    currentDate.setDate(currentDate.getDate() + 7);
+    renderWeekView();
+  });
+
+  $("username")?.addEventListener("input", (e) => {
+    selectedUser = e.target.value;
+    updateMemberStatus();
+  });
+});
+
+/* ===============================
+   描画系（最低限の安全実装）
+=============================== */
+
+function renderCalendar() {
+  if (!isUnlocked) return;
+  if (!$("calendar")) return;
+
+  // あなたの既存カレンダー描画ロジックをここに
+}
+
+function renderWeekView() {
+  if (!isUnlocked) return;
+  if (!$("week-items")) return;
+
+  // 週表示ロジック
+}
+
+function renderMatchDaysFromCalendar() {
+  if (!isUnlocked) return;
+  if (!$("match-days")) return;
+
+  // マッチ日表示
+}
+
+function updateUserCandidates() {
+  if (!$("user-list")) return;
+
+  const users = [...new Set(allRecords.map((r) => r.name).filter(Boolean))];
+  $("user-list").innerHTML = "";
+
+  users.forEach((name) => {
+    const option = document.createElement("option");
+    option.value = name;
+    $("user-list").appendChild(option);
+  });
+}
+
+function updateMemberStatus() {
+  if (!$("member-status")) return;
+
+  if (!selectedUser) {
+    $("member-status").textContent = "";
+    return;
+  }
+
+  $("member-status").textContent = isAdmin(selectedUser)
+    ? "管理者"
+    : "一般メンバー";
+}
+
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzo9CduystKPuC8M35s_6C45ha9-0JIDZpeVHNOH9FG3F5bVTFbNMfNEEz8wFFvZlEDEg/exec";
 
@@ -508,6 +684,18 @@ function renderMatchDaysFromCalendar() {
     box.appendChild(item);
   }
 }
+function checkPassword() {
+  const input = document.getElementById("password-input").value;
+
+  if (input === APP_PASSWORD) {
+    isUnlocked = true;
+    document.getElementById("password-screen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+  } else {
+    document.getElementById("password-error").textContent =
+      "パスワードが違います";
+  }
+}
 
 /* ================= 起動 ================= */
 
@@ -544,4 +732,14 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCalendar();
     renderMatchDaysFromCalendar();
   });
+});
+document
+  .getElementById("password-btn")
+  ?.addEventListener("click", checkPassword);
+document.addEventListener("DOMContentLoaded", () => {
+  if (!isUnlocked) {
+    document.getElementById("app").style.display = "none";
+    document.getElementById("password-screen").style.display = "block";
+    return;
+  }
 });
