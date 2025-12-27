@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
@@ -9,6 +10,27 @@
 </header>
   <body>
     <main>
+
+    <div id="password-screen">
+  <div class="password-box">
+    <h2>閲覧制限</h2>
+    <p>続行するにはパスワードを入力してください</p>
+
+    <input
+      id="password-input"
+      type="text"
+      placeholder="パスワードを入力"
+    />
+
+    <button id="password-btn">開く</button>
+
+    <div id="password-error"></div>
+  </div>
+    </div>
+
+  <!-- ここに今のカレンダー全体 -->
+
+
       <!-- タイトル -->
       <div class="card">
         <h1 class="page-title">予定共有カレンダー</h1>
@@ -68,10 +90,10 @@
         </div>
         <div id="match-days"></div>
       </div>
+
+</div>
     </main>
 
     <script src="main.js"></script>
   </body>
 </html>
-
-
