@@ -2,7 +2,7 @@
 /* ===============================
    基本設定
 =============================== */
-
+const REQUIRED_MEMBER_COUNT = 5; //最大人数調整
 /* 管理者（なければ空でOK） */
 const ADMIN_USERS = [];
 
@@ -135,7 +135,7 @@ function renderCalendar() {
   if (!isUnlocked) return;
   if (!$("calendar")) return;
 
-  // あなたの既存カレンダー描画ロジックをここに
+  // 既存カレンダー描画ロジック
 }
 
 function renderWeekView() {
@@ -181,9 +181,14 @@ function updateMemberStatus() {
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzo9CduystKPuC8M35s_6C45ha9-0JIDZpeVHNOH9FG3F5bVTFbNMfNEEz8wFFvZlEDEg/exec";
 
-const REQUIRED_MEMBER_COUNT = 5;
-
 const APP_PASSWORD = "まずはありがとう";
+
+//===========================人数明示=====================
+const maxnum = document.getElementById("max-number");
+
+if (maxnum && typeof REQUIRED_MEMBER_COUNT !== "undefined") {
+  maxnum.textContent += ` , 想定人数${REQUIRED_MEMBER_COUNT}人`;
+}
 
 /* ================= 正規化・共通 ================= */
 
